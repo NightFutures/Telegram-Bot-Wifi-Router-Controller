@@ -1,6 +1,10 @@
+import configparser
+
 from core.RouterService import RouterService
 
 if __name__ == '__main__':
+    config = configparser.ConfigParser()
+    config.read('config/settings.ini')
     
     router = RouterService()
-    router.auth('admin', '0303_DNdn_0303')
+    router.auth(config['Authentication']['login'], config['Authentication']['password'])
