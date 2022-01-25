@@ -26,4 +26,9 @@ class RouterService:
         
         response = requests.post(url=Url.router + Url.login.format(login, password), headers=headers)
         
-        print(response.cookies)
+        self.cookies = response.cookies
+        
+        response = requests.get(url=Url.router, headers=headers, cookies=response.cookies)
+        
+        self.token = re.findall(b'<script type="text\/javascript">var token="(.*)";', response.content)[0].decode('utf-8')
+    
