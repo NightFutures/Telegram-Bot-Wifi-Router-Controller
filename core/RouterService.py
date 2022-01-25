@@ -12,11 +12,18 @@ class RouterService:
         
     def getKeys(self):
         headers = {'Referer' : Url.router}
-        keys = requests.post(url=Url.router + Url.keys, headers=headers).content
-        print(keys)
+        response = requests.post(url=Url.router + Url.keys, headers=headers)
+        self.nn = re.findall(b'nn="(.*)"', response.content)[0].decode('utf-8')
+        self.ee = re.findall(b'ee="(\d*)"', response.content)[0].decode('utf-8')
         
     
     def auth(self, login, password):
-        n, e = self.getKeys()
-        login = self.encrypter.Encrypt(login, self.n, self.e)
-        password = self.encrypter.Encrypt(self.encoder.Base64Encoding(password), self.n, self.e)
+        self.getKeys()
+        login = self.encrypter.Encrypt(login, self.nn, self.ee)
+        password = self.encrypter.Encrypt(self.encoder.Base64Encoding(password), self.nn, self.ee)
+        
+        headers = {'Referer' : Url.router}
+        
+        response = requests.post(url=Url.router + Url.login.format(login, password), headers=headers)
+        
+        print(response.cookies)
