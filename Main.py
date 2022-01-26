@@ -8,3 +8,4 @@ if __name__ == '__main__':
     
     router = RouterService()
     router.auth(config['Authentication']['login'], config['Authentication']['password'])
+    router.logout()

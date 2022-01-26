@@ -1,4 +1,4 @@
-function Encrypt(val, nn, ee){	//n, e, 
+function RsaEncrypt(val, nn, ee){	//n, e, 
     // Copyright (c) 2005  Tom Wu
     // All Rights Reserved.
     // See "LICENSE" for details.
@@ -701,15 +701,15 @@ function Encrypt(val, nn, ee){	//n, e,
         rng_pool = new Array();
         rng_pptr = 0;
         
-        var t;
-        if(window.crypto && window.crypto.getRandomValues) {
-            // Use webcrypto if available
-            var ua = new Uint8Array(32);
-            window.crypto.getRandomValues(ua);
-            for(t = 0; t < 32; ++t){
-                rng_pool[rng_pptr++] = ua[t];
-            }
-        }
+        // var t;
+        // if(window.crypto && window.crypto.getRandomValues) {
+        //     // Use webcrypto if available
+        //     var ua = new Uint8Array(32);
+        //     window.crypto.getRandomValues(ua);
+        //     for(t = 0; t < 32; ++t){
+        //         rng_pool[rng_pptr++] = ua[t];
+        //     }
+        // }
   
         while(rng_pptr < rng_psize) {  // extract some randomness from Math.random()
             t = Math.floor(65536 * Math.random());

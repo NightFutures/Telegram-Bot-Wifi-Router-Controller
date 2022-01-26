@@ -4,3 +4,5 @@ class Url:
     keys = '/cgi/getParm'
     
     login = '/cgi/login?UserName={0}&Passwd={1}&Action=1&LoginStatus=0'
+    
+    logout = '/cgi/?8'
