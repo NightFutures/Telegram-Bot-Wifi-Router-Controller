@@ -1,4 +1,5 @@
 import requests
+
 import re
 
 from py_mini_racer import py_mini_racer
@@ -42,12 +43,11 @@ class RouterService:
         
         response = sendRequest(requests.get, url=Url.router, headers=headers, cookies=self.cookies)
         self.token = re.findall(b'<script type="text\/javascript">var token="(.*)";<\/script>', response.content)[0].decode('utf-8')
+        
+        headers = {'Referer' : Url.router, 'TokenID' : self.token}
     
     def logout(self):
         headers = {'TokenID' : self.token, 
-                   'Referer' : Url.router + '/',
-                   'Origin' : Url.router,
-                   'DNT' : '1',
-                   'Content-Type' : 'text/plain'}
-        response = sendRequest(requests.post, url=Url.router + Url.logout, headers=headers, cookies=self.cookies, data='[/cgi/clearBusy#0,0,0,0,0,0#0,0,0,0,0,0]0,0\r\n')
-        print(response.content)
+                   'Referer' : Url.router}
+        
+        sendRequest(requests.post, url=Url.router + Url.cgi8, headers=headers, cookies=self.cookies, data='[/cgi/logout#0,0,0,0,0,0#0,0,0,0,0,0]0,0\r\n')
