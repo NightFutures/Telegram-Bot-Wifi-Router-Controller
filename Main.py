@@ -10,5 +10,6 @@ if __name__ == '__main__':
     authInfo = AuthInfo()
     
     router = RouterService(authInfo)
-    router.auth(config['Authentication']['login'], config['Authentication']['password'])
+    router.auth(config['Authentication']['login'], 
+                config['Authentication']['password'])
     router.logout()
