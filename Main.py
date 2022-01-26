@@ -1,11 +1,14 @@
 import configparser
 
-from core.RouterService import RouterService
+from core.service.RouterAuthService import RouterService
+from core.config.AuthInfo import *
 
 if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read('config/settings.ini')
     
-    router = RouterService()
+    authInfo = AuthInfo()
+    
+    router = RouterService(authInfo)
     router.auth(config['Authentication']['login'], config['Authentication']['password'])
     router.logout()
