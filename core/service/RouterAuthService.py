@@ -1,33 +1,16 @@
 import requests
 import re
+import configparser
 
-from core.config.Url import *
 from core.config.AuthInfo import *
 from core.assist.securityJs import *
 
 from core.assist.http import sendRequest
 
-def getKeys():
-    headers = {'Referer' : Url.router}
-    response = sendRequest(requests.post, 
-                           url=Url.router + Url.keys, 
-                           headers=headers)
-    nn = re.findall(b'nn="(.*)"', response.content)[0].decode('utf-8')
-    ee = re.findall(b'ee="(\d*)"', response.content)[0].decode('utf-8')
+config = configparser.ConfigParser()
+config.read('config/url.ini')
     
-    return nn, ee
-
-def getToken(authInfo : AuthInfo):
-    headers = {'Referer' : Url.router}
-    response = sendRequest(requests.get, 
-                           url=Url.router, 
-                           headers=headers, 
-                           cookies=authInfo.jSessionId)
-    
-    return re.findall(b'<script type="text\/javascript">var token="(.*)";<\/script>', 
-                      response.content)[0].decode('utf-8')
-    
-class RouterService:
+class RouterAuthService:
     def __init__(self, authInfo : AuthInfo):
         self.authInfo = authInfo
     
@@ -39,9 +22,9 @@ class RouterService:
         password = encoder.call('Base64Encoding', password)
         password = encrypter.call('RsaEncrypt', password, nn, ee)
         
-        headers = {'Referer' : Url.router}
+        headers = {'Referer' : config['Router']['url']}
         response = sendRequest(requests.post, 
-                               url=Url.router + Url.login.format(login, password), headers=headers)
+                               url=config['Router']['url'] + config['Login']['url'].format(login, password), headers=headers)
         
         self.authInfo.setJSessionId(response.cookies)
         self.authInfo.setTokenId(getToken(self.authInfo))
@@ -50,9 +33,32 @@ class RouterService:
     
     def logout(self):
         headers = {'TokenID' : self.authInfo.tokenId, 
-                   'Referer' : Url.router}
+                   'Referer' : config['Router']['url'],
+                   'Content-Type' : 'text/plain'}
         
-        sendRequest(requests.post, 
-                    url=Url.router + Url.cgi8, headers=headers, 
+        response = sendRequest(requests.post, 
+                    url=config['Router']['url'] + config['Logout']['url'],
+                    headers=headers, 
                     cookies=self.authInfo.jSessionId, 
-                    data='[/cgi/logout#0,0,0,0,0,0#0,0,0,0,0,0]0,0\r\n')
+                    data=config['Logout']['command'] + '\r\n')
+        
+        
+def getKeys():
+    headers = {'Referer' : config['Router']['url']}
+    response = sendRequest(requests.post, 
+                           url=config['Router']['url'] + config['Keys']['url'], 
+                           headers=headers)
+    nn = re.findall(b'nn="(.*)"', response.content)[0].decode('utf-8')
+    ee = re.findall(b'ee="(\d*)"', response.content)[0].decode('utf-8')
+    
+    return nn, ee
+
+def getToken(authInfo : AuthInfo):
+    headers = {'Referer' : config['Router']['url']}
+    response = sendRequest(requests.get, 
+                           url=config['Router']['url'], 
+                           headers=headers, 
+                           cookies=authInfo.jSessionId)
+    
+    return re.findall(b'<script type="text\/javascript">var token="(.*)";<\/script>', 
+                      response.content)[0].decode('utf-8')
