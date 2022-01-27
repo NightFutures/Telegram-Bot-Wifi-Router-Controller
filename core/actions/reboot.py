@@ -3,7 +3,9 @@ import configparser
 
 from core.config.AuthInfo import *
 
-from core.assist.http import sendRequest
+from core.assist.Http import sendRequest
+
+from core.exception.HttpRequestException import *
 
 config = configparser.ConfigParser()
 config.read('config/url.ini')
@@ -20,6 +22,4 @@ def reboot(authInfo : AuthInfo) -> bool:
                            replace('\\n', '\n'))
     
     if response.status_code != 200 or response.content.decode('utf-8') != config['Reboot']['response'].replace('\\r', '\r').replace('\\n', '\n'):
-        return False
-        
-    return True
+        raise HttpRequestException('Authenticate error', response.status_code, response.content)

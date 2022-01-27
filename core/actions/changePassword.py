@@ -3,7 +3,9 @@ import configparser
 
 from core.config.AuthInfo import *
 
-from core.assist.http import sendRequest
+from core.assist.Http import sendRequest
+
+from core.exception.HttpRequestException import *
 
 config = configparser.ConfigParser()
 config.read('config/url.ini')
@@ -24,10 +26,8 @@ def changePassword(authInfo : AuthInfo, password : str) -> bool:
                            format(settings['Authentication']['password'], settings['Authentication']['login'], password))
     
     if response.status_code != 200 or response.content.decode('utf-8') != config['Change password']['response'].replace('\\r', '\r').replace('\\n', '\n'):
-        return False
+        raise HttpRequestException('Authenticate error', response.status_code, response.content)
     
     config.set('Authentication', 'password', password)
     with open('config/settings.ini', 'w') as configfile:
         config.write(configfile)
-    
-    return True
