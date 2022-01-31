@@ -1,3 +1,5 @@
+from collections.abc import Callable
+
 from requests import Response
 
 def sendRequest(func, *args, **kwargs) -> Response:

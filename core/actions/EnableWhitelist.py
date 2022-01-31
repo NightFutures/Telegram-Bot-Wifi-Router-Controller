@@ -10,16 +10,17 @@ from core.exception.HttpRequestException import *
 config = configparser.ConfigParser()
 config.read('config/url.ini')
 
-def reboot(authInfo : AuthInfo) -> bool:
+def enableWhitelist(authInfo : AuthInfo, enable : bool) -> bool:
     headers = {'Referer' : config['Router']['url'],
                'TokenID' : authInfo.tokenId}
+    
     response = sendRequest(requests.post, 
-                           url=config['Router']['url'] + config['Reboot']['url'], 
+                           url=config['Router']['url'] + config['Enable whitelist']['url'], 
                            headers=headers, 
                            cookies=authInfo.cookies, 
-                           data=config['Reboot']['command'].
+                           data=config['Enable whitelist']['command'].format(int(enable)).
                            replace('\\r', '\r').
                            replace('\\n', '\n'))
     
-    if response.status_code != 200 or response.content.decode('utf-8') != config['Reboot']['response'].replace('\\r', '\r').replace('\\n', '\n'):
-        raise HttpRequestException('Error while rebooting', response.status_code, response.content)
+    if response.status_code != 200 or response.content.decode('utf-8') != config['Enable whitelist']['response'].replace('\\r', '\r').replace('\\n', '\n'):
+        raise HttpRequestException('Error while enabling whitelist', response.status_code, response.content)

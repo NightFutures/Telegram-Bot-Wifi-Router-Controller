@@ -19,15 +19,15 @@ def changePassword(authInfo : AuthInfo, password : str) -> bool:
     response = sendRequest(requests.post, 
                            url=config['Router']['url'] + config['Change password']['url'], 
                            headers=headers, 
-                           cookies=authInfo.jSessionId, 
+                           cookies=authInfo.cookies, 
                            data=config['Change password']['command'].
                            replace('\\r', '\r').
                            replace('\\n', '\n').
                            format(settings['Authentication']['password'], settings['Authentication']['login'], password))
     
     if response.status_code != 200 or response.content.decode('utf-8') != config['Change password']['response'].replace('\\r', '\r').replace('\\n', '\n'):
-        raise HttpRequestException('Authenticate error', response.status_code, response.content)
+        raise HttpRequestException('Error while changing password', response.status_code, response.content)
     
-    config.set('Authentication', 'password', password)
+    settings.set('Authentication', 'password', password)
     with open('config/settings.ini', 'w') as configfile:
-        config.write(configfile)
+        settings.write(configfile)
