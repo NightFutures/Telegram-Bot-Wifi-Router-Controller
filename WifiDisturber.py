@@ -18,7 +18,7 @@ if __name__ == '__main__':
     
     router = RouterAuthService(authInfo)
     
-    timeDelays = [18, 13, 17, 17, 23, 18, 16, 9, 11, 11, 15, 7, 6, 13, 14]
+    timeDelays = [18, 19, 17, 17, 23, 18, 16, 19, 14, 18, 15, 17, 26, 13, 14]
     timeDelaysSize = size(timeDelays)
     
     i = 0
@@ -26,7 +26,28 @@ if __name__ == '__main__':
         try:
             router.auth(config['Authentication']['login'], 
                         config['Authentication']['password'])
-            enableWhitelist(authInfo, bool(i % 2))
+            enableWhitelist(authInfo, True)
+        except HttpRequestException as exception:
+            print(exception.message)
+            print('Status code: ' + str(exception.status_code))
+            if(exception.status_code == 200):
+                print(exception.response)
+                
+        try:       
+            router.logout()
+        except HttpRequestException as exception:
+            print(exception.message)
+            print('Status code: ' + str(exception.status_code))
+            if(exception.status_code == 200):
+                print(exception.response)
+        
+        print('Waiting for 10 seconds...')
+        time.sleep(10)
+        
+        try:
+            router.auth(config['Authentication']['login'], 
+                        config['Authentication']['password'])
+            enableWhitelist(authInfo, False)
         except HttpRequestException as exception:
             print(exception.message)
             print('Status code: ' + str(exception.status_code))
@@ -41,6 +62,8 @@ if __name__ == '__main__':
             if(exception.status_code == 200):
                 print(exception.response)
                 
-        print(f'Waiting for {timeDelays[i]} seconds...')
-        time.sleep(timeDelays[i])
-        i = (i + 1) % timeDelaysSize
+        print('Waiting for 5 seconds...')
+        time.sleep(5)
+        # print(f'Waiting for {timeDelays[i]} seconds...')
+        # time.sleep(timeDelays[i])
+        # i = (i + 1) % timeDelaysSize
