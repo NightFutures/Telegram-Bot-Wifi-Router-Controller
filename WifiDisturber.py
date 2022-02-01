@@ -1,8 +1,6 @@
 import configparser
 import time
 
-from numpy import size
-
 from core.service.RouterAuthService import RouterAuthService
 from core.config.AuthInfo import *
 
@@ -18,8 +16,8 @@ if __name__ == '__main__':
     
     router = RouterAuthService(authInfo)
     
-    timeDelays = [18, 19, 17, 17, 23, 18, 16, 19, 14, 18, 15, 17, 26, 13, 14]
-    timeDelaysSize = size(timeDelays)
+    enableTime = 7
+    disableTime = 5
     
     i = 0
     while True:
@@ -41,8 +39,9 @@ if __name__ == '__main__':
             if(exception.status_code == 200):
                 print(exception.response)
         
-        print('Waiting for 10 seconds...')
-        time.sleep(10)
+        print("\033[H\033[J", end="")
+        print(f'Whitelist enabled for {enableTime} seconds...')
+        time.sleep(enableTime)
         
         try:
             router.auth(config['Authentication']['login'], 
@@ -62,8 +61,6 @@ if __name__ == '__main__':
             if(exception.status_code == 200):
                 print(exception.response)
                 
-        print('Waiting for 5 seconds...')
-        time.sleep(5)
-        # print(f'Waiting for {timeDelays[i]} seconds...')
-        # time.sleep(timeDelays[i])
-        # i = (i + 1) % timeDelaysSize
+        print("\033[H\033[J", end="")
+        print(f'Whitelist disabled for {disableTime} seconds...')
+        time.sleep(disableTime)
