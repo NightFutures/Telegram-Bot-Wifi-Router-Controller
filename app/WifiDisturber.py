@@ -29,9 +29,7 @@ from core.assist.Console import clearConsole
 config = configparser.ConfigParser()
 config.read('config/settings.ini')
 
-authInfo = AuthInfo()
-
-router = RouterAuthService(authInfo)
+router = RouterAuthService()
 
 enableTime = 3
 disableTime = 6
@@ -39,7 +37,7 @@ disableTime = 6
 i = 0
 while True:
     try:
-        router.auth(config['Authentication']['login'], 
+        authInfo = router.auth(config['Authentication']['login'], 
                     config['Authentication']['password'])
         enableWhitelist(authInfo, True)
     except HttpRequestException as exception:

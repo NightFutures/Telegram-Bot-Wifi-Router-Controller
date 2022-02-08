@@ -13,10 +13,10 @@ config = configparser.ConfigParser()
 config.read('config/url.ini')
     
 class RouterAuthService:
-    def __init__(self, authInfo : AuthInfo):
-        self.authInfo = authInfo
+    def __init__(self):
+        self.authInfo = AuthInfo()
     
-    def auth(self, login, password) -> bool:
+    def auth(self, login, password) -> AuthInfo:
         encoder, encrypter = getEncoder(), getEncrypter()
         nn, ee = getKeys()
 
@@ -38,6 +38,8 @@ class RouterAuthService:
         self.authInfo.cookies = response.cookies
         self.authInfo.nnKey = nn
         self.authInfo.eeKey = ee
+        
+        return self.authInfo
     
     def logout(self) -> bool:
         headers = {'TokenID' : self.authInfo.tokenId, 
