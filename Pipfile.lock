@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "35c46f36a80442e758ad792ac4e0af1b3df6625744e45bb1e526dd1a9348498e"
+            "sha256": "89896ba9825ca4bdb86bc519ab26989e8d422c1436d5ca84a4a3f62053cbe16b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -39,12 +39,22 @@
             "markers": "python_version >= '3'",
             "version": "==3.3"
         },
-        "pytelegrambotapi": {
+        "py-mini-racer": {
             "hashes": [
-                "sha256:0cf9338b8bdcc57e49a6d11b2492d8661c708bda165ab21940404b2db8c52ad6"
+                "sha256:346e73bb89a2024888244d487834be24a121089ceb0641dd0200cb96c4e24b57",
+                "sha256:42896c24968481dd953eeeb11de331f6870917811961c9b26ba09071e07180e2",
+                "sha256:97cab31bbf63ce462ba4cd6e978c572c916d8b15586156c7c5e0b2e42c10baab",
+                "sha256:f71e36b643d947ba698c57cd9bd2232c83ca997b0802fc2f7f79582377040c11"
             ],
             "index": "pypi",
-            "version": "==4.3.1"
+            "version": "==0.6.0"
+        },
+        "pytelegrambotapi": {
+            "hashes": [
+                "sha256:e6f22356abebffe0a893dcf72fe09a0c8bdedad6f498c55a30c3dd32ce488e6a"
+            ],
+            "index": "pypi",
+            "version": "==4.4.0"
         },
         "requests": {
             "hashes": [

@@ -1,3 +1,3 @@
-#Clears console without need to import any libraries
+#Clears console
 def clearConsole():
     print("\033[H\033[J", end="")

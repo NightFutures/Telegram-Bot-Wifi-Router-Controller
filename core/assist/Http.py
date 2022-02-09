@@ -1,11 +1,10 @@
-from collections.abc import Callable
-
 from requests import Response
+from typing import Callable
 
-def sendRequest(func, *args, **kwargs) -> Response:
-    response = func(*args, **kwargs)
+def sendRequest(func : Callable[..., Response], **kwargs) -> Response:
+    response = func(**kwargs)
     for _ in range(4):
         if(response.status_code == 200):
             break
-        response = func(*args, **kwargs)
+        response = func(**kwargs)
     return response
