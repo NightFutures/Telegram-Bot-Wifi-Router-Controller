@@ -26,12 +26,12 @@ if __name__ != '__main__':
 
 
 config = configparser.ConfigParser()
-config.read('config/settings.ini')
+config.read('config/router.ini')
 
 router = RouterAuthService()
 
-enableTime = 11
-disableTime = 4
+enableTime = 2
+disableTime = 3
 
 i = 0
 while True:

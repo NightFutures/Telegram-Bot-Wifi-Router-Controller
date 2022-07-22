@@ -12,7 +12,7 @@ config.read('config/url.ini')
 
 def changePassword(authInfo : AuthInfo, password : str) -> bool:
     settings = configparser.ConfigParser()
-    settings.read('config/settings.ini')
+    settings.read('config/router.ini')
     
     headers = {'Referer' : config['Router']['url'],
                'TokenID' : authInfo.tokenId}
